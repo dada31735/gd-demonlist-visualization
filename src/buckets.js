@@ -2,7 +2,7 @@
 import { filterTags } from './tags.js';
 
 export function tagShareByBucket(levels, options = {}) {
-  const bucketSize = options.bucketSize ?? 100;
+  const bucketSize = options.bucketSize ?? 150;
   const groups = options.groups;
 
   const buckets = new Map();

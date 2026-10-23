@@ -1,0 +1,52 @@
+
+/*Color palette (from coolors.co :amber-glow, tea-green, pacific-blue, dusk-blue, crimson-violet)*/
+:root {
+  --amber-glow: #ffa630;
+  --lighter-amber-glowlol: #ffce8f;
+  --tea-green: #d7e8ba;
+  --pacific-blue: #4da1a9;
+  --dusk-blue: #2e5077;
+  --crimson-violet: #611c35;
+    --darker-crimson-violet: #220912;
+  --neutral: #f2d6a2;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  background: var(--dusk-blue);
+  color: var(--tea-green);
+  font-family: system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  color: var(--amber-glow);
+}
+
+header p,
+.hint {
+  color: color-mix(in srgb, var(--tea-green) 75%, transparent);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.controls input {
+  accent-color: var(--amber-glow);
+}
+
+#chart {
+  overflow-x: auto;
+}
