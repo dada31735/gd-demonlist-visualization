@@ -1,0 +1,9 @@
+{
+    "name":"gd-demonlist-viz",
+    "private":true,
+    "type":"module",
+    "scripts":{
+        "fetch":"node scripts/fetch-levels.js",
+        "test":"node --test"
+    }
+}
