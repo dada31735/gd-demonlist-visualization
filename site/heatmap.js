@@ -57,7 +57,7 @@ export function renderHeatmap(levels, groups, options = {}) {
     y: { domain: tags, label: null, tickSize: 0 },
     color: {
         type: 'linear',
-        domain: [0, maxValue / 2, maxValue],
+        domain: [0, maxValue / 3, (maxValue * 2) / 3, maxValue],
         range: [css('--darker-crimson-violet'), css('--crimson-violet'), css('--amber-glow'), css('--lighter-amber-glowlol')],
         interpolate: 'lab',
         legend: true,

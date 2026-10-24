@@ -30,7 +30,7 @@ const liftLabel = document.createElement('label');
 const liftBox = document.createElement('input');
 liftBox.type = 'checkbox';
 liftBox.checked = true;
-liftLabel.append(liftBox, "compare to each tag's average");
+liftLabel.append(liftBox, 'scale each tag separately');
 controls.append(liftLabel);
 
 const sizeLabel = document.createElement('label');
