@@ -21,8 +21,17 @@
             the percentage will be higher even if the bucket contains the same amount of levels as another bucket. TLDR: I reccomend keeping it at 150 levels per column.
             <br><em>(this might change in the future as more levels get added)</em>
         </p>
-        <div class="controls" id="controls"></div>
-        <div id="chart">Loading...</div>
+        <div class="controls" id="heatmap-controls"></div>
+        <div id="heatmap-chart">Loading...</div>
+        <section class="view">
+        <h2>Tags vs enjoyment</h2>
+            <p class="hint">
+                Average EDEL rating of the levels with each tag, shown as the difference from the average across all rated levels. Orange means a tag's levels are rated 
+                more enjoyable than average, blue means less. The number in brackets is how many rated levels the tag has.
+            </p>
+            <div class="controls" id="enjoyment-controls"></div>
+            <div id="enjoyment-chart">Loading...</div>
+        </section>
     </main>
     <script type="module" src="site/main.js"></script>
   </body>

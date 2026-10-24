@@ -1,6 +1,7 @@
 import * as Plot from 'https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm';
 import { tagShareByBucket } from '../src/buckets.js';
 import { filterTags } from '../src/tags.js';
+import { addGroupToggles, checkedGroups } from './ui.js';
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
@@ -84,4 +85,47 @@ export function renderHeatmap(levels, groups, options = {}) {
       }),
     ],
   });
+}
+
+export function mountHeatmap(levels) {
+  const controls = document.getElementById('heatmap-controls');
+  const chart = document.getElementById('heatmap-chart');
+
+  addGroupToggles(controls, new Set(['gamemode']));
+
+  const perTagLabel = document.createElement('label');
+  const perTagBox = document.createElement('input');
+  perTagBox.type = 'checkbox';
+  perTagBox.checked = true;
+  perTagLabel.append(perTagBox, 'scale each tag separately');
+  controls.append(perTagLabel);
+
+  const sizeLabel = document.createElement('label');
+  const sizeSelect = document.createElement('select');
+  for (const size of [100, 150, 300, 500]) {
+    const option = document.createElement('option');
+    option.value = size;
+    option.textContent = `${size} levels per column`;
+    option.selected = size === 150;
+    sizeSelect.append(option);
+  }
+  sizeLabel.append(sizeSelect);
+  controls.append(sizeLabel);
+
+  function draw() {
+    const groups = checkedGroups(controls);
+    if (groups.length === 0) {
+      chart.textContent = 'Pick at least one tag group.';
+      return;
+    }
+    chart.replaceChildren(
+      renderHeatmap(levels, groups, {
+        perTag: perTagBox.checked,
+        bucketSize: Number(sizeSelect.value),
+      }),
+    );
+  }
+
+  controls.addEventListener('change', draw);
+  draw();
 }
