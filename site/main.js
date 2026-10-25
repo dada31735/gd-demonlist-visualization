@@ -1,5 +1,6 @@
 import { mountHeatmap } from './heatmap.js';
 import { mountEnjoyment } from './enjoyment-chart.js';
+import { mountGraph } from './graph.js';
 
 let levels;
 try {
@@ -13,3 +14,4 @@ try {
 
 mountHeatmap(levels);
 mountEnjoyment(levels);
+mountGraph(levels);

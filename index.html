@@ -24,13 +24,21 @@
         <div class="controls" id="heatmap-controls"></div>
         <div id="heatmap-chart">Loading...</div>
         <section class="view">
-        <h2>Tags vs enjoyment</h2>
+            <h2>Tags vs enjoyment</h2>
             <p class="hint">
                 Average EDEL rating of the levels with each tag, shown as the difference from the average across all rated levels. Orange means a tag's levels are rated 
                 more enjoyable than average, blue means less. The number in brackets is how many rated levels the tag has.
             </p>
             <div class="controls" id="enjoyment-controls"></div>
             <div id="enjoyment-chart">Loading...</div>
+        </section>
+        <section class="view">
+            <h2>Level similarity</h2>
+            <p class="hint">
+                Every dot is a level. Levels that share a lot of tags are pulled together, so clusters are groups of levels that play alike. Color shows difficulty: amber is near the top of the list, blue is near the bottom. Toggle tag groups to change what "similar" means, for example tick version and watch the clusters turn into noise.
+            </p>
+            <div class="controls" id="graph-controls"></div>
+            <div id="graph-chart"></div>
         </section>
     </main>
     <script type="module" src="site/main.js"></script>
