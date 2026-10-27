@@ -135,12 +135,18 @@ header p,
   transform: scale(1);
 }
 
-#chart {
+.view {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--dusk-blue) 75%, black);
+  border: 4px solid var(--darker-crimson-violet);
+  border-radius: 1rem;
+  box-shadow: 0.4rem 0.4rem 0 var(--darker-crimson-violet);
   overflow-x: auto;
 }
 
-.view {
-  margin-top: 3rem;
+.view > h2:first-child {
+  margin-top: 0;
 }
 
 .graph-layout {
