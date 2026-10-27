@@ -104,7 +104,7 @@ export function mountGraph(levels) {
   controls.append(makeLabel(kSelect), makeLabel(colorSelect), makeLabel(search, datalist), resetButton);
 
   // colors
-  const orange = cssVar('--orange-glow');
+  const orange = cssVar('--amber-glow');
   const green = cssVar('--tea-green');
   const blue = cssVar('--pacific-blue');
 
