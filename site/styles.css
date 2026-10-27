@@ -53,8 +53,86 @@ header p,
   cursor: pointer;
 }
 
-.controls input {
-  accent-color: var(--amber-glow);
+.controls select,
+.controls button,
+.controls input[type='search'] {
+  appearance: none;
+  font: inherit;
+  color: var(--tea-green);
+  background-color: var(--crimson-violet);
+  border: 3px solid var(--darker-crimson-violet);
+  border-radius: 0.6rem;
+  padding: 0.35rem 0.7rem;
+  box-shadow: 0.2rem 0.2rem 0 var(--darker-crimson-violet);
+  transition: transform 80ms, box-shadow 80ms;
+}
+
+.controls select,
+.controls button {
+  cursor: pointer;
+}
+
+.controls select:hover,
+.controls button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 0.3rem 0.3rem 0 var(--darker-crimson-violet);
+}
+
+.controls select:active,
+.controls button:active {
+  transform: translate(0.2rem, 0.2rem);
+  box-shadow: 0 0 0 var(--darker-crimson-violet);
+}
+
+.controls select:focus-visible,
+.controls button:focus-visible,
+.controls input:focus-visible {
+  outline: 3px solid var(--amber-glow);
+  outline-offset: 2px;
+}
+
+.controls select {
+  padding-right: 2rem;
+  background-image: url('./graphics/check.svg');
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 0.8rem;
+}
+
+.controls input[type='search']::placeholder {
+  color: color-mix(in srgb, var(--tea-green) 55%, transparent);
+}
+
+.controls input[type='checkbox'] {
+  appearance: none;
+  display: grid;
+  place-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  background: var(--crimson-violet);
+  border: 3px solid var(--darker-crimson-violet);
+  border-radius: 0.4rem;
+  box-shadow: 0.15rem 0.15rem 0 var(--darker-crimson-violet);
+  cursor: pointer;
+}
+
+.controls input[type='checkbox']:checked {
+  background: var(--amber-glow);
+}
+
+.controls input[type='checkbox']::before {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  background: var(--darker-crimson-violet);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: transform 80ms;
+}
+
+.controls input[type='checkbox']:checked::before {
+  transform: scale(1);
 }
 
 #chart {
