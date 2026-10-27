@@ -19,6 +19,19 @@ body {
   font-family: system-ui, sans-serif;
 }
 
+body {
+  background-color: var(--dusk-blue);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--tea-green) 8%, transparent) 2px, transparent 2px),
+    linear-gradient(90deg, color-mix(in srgb, var(--tea-green) 8%, transparent) 2px, transparent 2px);
+  background-size: 48px 48px;
+}
+
+a {
+  color: var(--amber-glow);
+  font-weight: bolder;
+}
+
 h1,
 h2 {
   font-family: 'Lilita One', system-ui, sans-serif;
