@@ -1,6 +1,7 @@
 import { mountHeatmap } from './heatmap.js';
 import { mountEnjoyment } from './enjoyment-chart.js';
 import { mountGraph } from './graph.js';
+import { mountCreators } from './creators-chart.js';
 
 let levels;
 try {
@@ -12,6 +13,13 @@ try {
   throw err;
 }
 
+let creators = null;
+try {
+  const res = await fetch(new URL('../data/creators.json', import.meta.url));
+  if (res.ok) creators = await res.json();
+} catch {}
+
 mountHeatmap(levels);
 mountEnjoyment(levels);
 mountGraph(levels);
+mountCreators(levels, creators);
