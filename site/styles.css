@@ -21,7 +21,17 @@ body {
 
 h1,
 h2 {
+  font-family: 'Lilita One', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   color: var(--amber-glow);
+  -webkit-text-stroke: 0.12em var(--darker-crimson-violet);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.08em 0 var(--darker-crimson-violet);
+}
+
+h1 {
+  font-size: 3rem;
 }
 
 header p,
