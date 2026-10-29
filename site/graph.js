@@ -12,6 +12,7 @@ import {
 import { nearestNeighbors, similarity } from '../src/similarity.js';
 import { filterTags } from '../src/tags.js';
 import { addGroupToggles, checkedGroups } from './ui.js';
+import { CLASSIC } from '../src/datasets.js';
 
 const HEIGHT = 700;
 const PANEL_WIDTH = 300;
@@ -50,9 +51,9 @@ function makeLabel(...children) {
   return label;
 }
 
-export function mountGraph(levels) {
-  const controls = document.getElementById('graph-controls');
-  const chart = document.getElementById('graph-chart');
+export function mountGraph(levels, ds = CLASSIC) {
+  const controls = document.getElementById(`${ds.prefix}graph-controls`);
+  const chart = document.getElementById(`${ds.prefix}graph-chart`);
 
   const canvas = document.createElement('canvas');
   const tooltip = make('div', 'graph-tooltip');
@@ -75,7 +76,7 @@ export function mountGraph(levels) {
   canvas.style.height = `${HEIGHT}px`;
   const ctx = canvas.getContext('2d');
 
-  addGroupToggles(controls, new Set(['gamemode', 'style']));
+  addGroupToggles(controls, new Set(['gamemode', 'style']), ds.tagGroups);
 
   const kSelect = makeSelect(
     [2, 3, 4, 6].map((n) => [n, `${n} links per level`]),
@@ -89,9 +90,10 @@ export function mountGraph(levels) {
   const search = document.createElement('input');
   search.type = 'search';
   search.placeholder = 'Find a level...';
-  search.setAttribute('list', 'graph-level-names');
+  const listId = `${ds.prefix}graph-level-names`;
+  search.setAttribute('list', listId);
   const datalist = document.createElement('datalist');
-  datalist.id = 'graph-level-names';
+  datalist.id = listId;
   for (const level of levels) {
     const option = document.createElement('option');
     option.value = level.name;
@@ -343,10 +345,10 @@ export function mountGraph(levels) {
 
     active = true;
     updateNote();
-    tagSets = levels.map((level) => new Set(filterTags(level.tags, groups)));
+    tagSets = levels.map((level) => new Set(filterTags(level.tags, groups, ds.tagGroups)));
     nodes = levels.map((level) => ({ level })); // d3 adds x/y to these
-    edges = nearestNeighbors(levels, { groups, k: Number(kSelect.value) });
-
+    edges = nearestNeighbors(levels, { groups, k: Number(kSelect.value), tagGroups: ds.tagGroups });
+    
     simulation = forceSimulation(nodes)
       .force(
         'link',

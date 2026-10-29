@@ -1,5 +1,6 @@
 import * as Plot from 'https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm';
 import { creatorRanking } from '../src/creators.js';
+import { CLASSIC } from '../src/datasets.js';
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
@@ -18,9 +19,9 @@ function addSelect(controls, options, selected, format) {
   return select;
 }
 
-export function mountCreators(levels, creators) {
-  const controls = document.getElementById('creators-controls');
-  const chart = document.getElementById('creators-chart');
+export function mountCreators(levels, creators, ds = CLASSIC) {
+  const controls = document.getElementById(`${ds.prefix}creators-controls`);
+  const chart = document.getElementById(`${ds.prefix}creators-chart`);
 
   if (!creators) {
     chart.textContent = 'Creator data not found. Run scripts/fetch-creators.js.';

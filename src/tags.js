@@ -10,17 +10,27 @@ export const TAG_GROUPS = {
   meta: ['NONG'],
 };
 
-const GROUP_BY_TAG = new Map();
-for (const [group, tags] of Object.entries(TAG_GROUPS)) {
-  for (const tag of tags) GROUP_BY_TAG.set(tag, group);
-}
-
 export const DEFAULT_GROUPS = ['gamemode', 'style'];
 
-export function filterTags(tags, groups = DEFAULT_GROUPS) {
-  const allowed = new Set(groups);
-  return tags.filter((tag) => allowed.has(groupOf(tag)));
+const lookups = new WeakMap();
+
+function lookupFor(tagGroups) {
+  let lookup = lookups.get(tagGroups);
+  if (!lookup) {
+    lookup = new Map();
+    for (const [group, tags] of Object.entries(tagGroups)) {
+      for (const tag of tags) lookup.set(tag, group);
+    }
+    lookups.set(tagGroups, lookup);
+  }
+  return lookup;
 }
-export function groupOf(tag) {
-  return GROUP_BY_TAG.get(tag) ?? 'unknown';
+
+export function groupOf(tag, tagGroups = TAG_GROUPS) {
+  return lookupFor(tagGroups).get(tag) ?? 'unknown';
+}
+
+export function filterTags(tags, groups = DEFAULT_GROUPS, tagGroups = TAG_GROUPS) {
+  const allowed = new Set(groups);
+  return tags.filter((tag) => allowed.has(groupOf(tag, tagGroups)));
 }
