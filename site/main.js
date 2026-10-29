@@ -2,6 +2,7 @@ import { mountHeatmap } from './heatmap.js';
 import { mountEnjoyment } from './enjoyment-chart.js';
 import { mountGraph } from './graph.js';
 import { mountCreators } from './creators-chart.js';
+import { setupTabs } from './tabs.js';
 
 let levels;
 try {
@@ -19,7 +20,12 @@ try {
   if (res.ok) creators = await res.json();
 } catch {}
 
-mountHeatmap(levels);
-mountEnjoyment(levels);
-mountGraph(levels);
-mountCreators(levels, creators);
+setupTabs({
+  classic: () => {
+    mountHeatmap(levels);
+    mountEnjoyment(levels);
+    mountGraph(levels);
+    mountCreators(levels, creators);
+  },
+  platformer: () => {},
+});
