@@ -4,6 +4,7 @@ import { filterTags } from './tags.js';
 export function tagShareByBucket(levels, options = {}) {
   const bucketSize = options.bucketSize ?? 150;
   const groups = options.groups;
+  const tagGroups = options.tagGroups;
 
   const buckets = new Map();
 
@@ -29,7 +30,7 @@ export function tagShareByBucket(levels, options = {}) {
     bucket.end = Math.max(bucket.end, level.position);
 
     // Count each tag at most once per level.
-    const tags = filterTags(level.tags, groups);
+    const tags = filterTags(level.tags, groups, tagGroups);
     const uniqueTags = new Set(tags);
 
     for (const tag of uniqueTags) {
