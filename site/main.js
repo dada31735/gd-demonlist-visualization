@@ -1,25 +1,31 @@
+import { CLASSIC, PLATFORMER } from '../src/datasets.js';
 import { mountHeatmap } from './heatmap.js';
 import { mountEnjoyment } from './enjoyment-chart.js';
 import { mountGraph } from './graph.js';
 import { mountCreators } from './creators-chart.js';
+import { setupTabs } from './tabs.js';
 
-let levels;
-try {
-  const res = await fetch(new URL('../data/levels.json', import.meta.url));
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  levels = await res.json();
-} catch (err) {
-  document.querySelector('main').textContent = `Failed to load data: ${err.message}`;
-  throw err;
+async function loadJson(file) {
+  const res = await fetch(new URL(`../data/${file}`, import.meta.url));
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${file}`);
+  return res.json();
 }
 
-let creators = null;
-try {
-  const res = await fetch(new URL('../data/creators.json', import.meta.url));
-  if (res.ok) creators = await res.json();
-} catch {}
+async function mountDataset(ds) {
+  try {
+    const levels = await loadJson(ds.levelsFile);
+    const creators = await loadJson(ds.creatorsFile).catch(() => null); // optional
 
-mountHeatmap(levels);
-mountEnjoyment(levels);
-mountGraph(levels);
-mountCreators(levels, creators);
+    mountHeatmap(levels, ds);
+    mountEnjoyment(levels, ds);
+    mountGraph(levels, ds);
+    mountCreators(levels, creators, ds);
+  } catch (err) {
+    document.getElementById(`tab-${ds.tab}`).textContent = `Failed to load data: ${err.message}`;
+  }
+}
+
+setupTabs({
+  classic: () => mountDataset(CLASSIC),
+  platformer: () => mountDataset(PLATFORMER),
+});

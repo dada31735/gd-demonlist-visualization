@@ -18,42 +18,85 @@
       </p>
     </header>
     <main>
-        <section class="view">
-          <h2>Tags vs difficulty</h2>
-          <p class="hint">Share of levels in each position bucket that carry each tag. Rows are sorted by how high on the list the tag tends to appear. 
-              <br> <br>
-              If you change the levels per column to something other than 150 note that the last bucket will contain considerably fewer levels than the other buckets and thus 
-              the percentage will be higher even if the bucket contains the same amount of levels as another bucket. TLDR: I reccomend keeping it at 150 levels per column.
-              <br><em>(this might change in the future as more levels get added)</em>
-          </p>
-          <div class="controls" id="heatmap-controls"></div>
-          <div id="heatmap-chart">Loading...</div>
-        </section>
-        <section class="view">
-            <h2>Tags vs enjoyment</h2>
-            <p class="hint">
-                Average EDEL rating of the levels with each tag, shown as the difference from the average across all rated levels. Orange means a tag's levels are rated 
-                more enjoyable than average, blue means less. The number in brackets is how many rated levels the tag has.
+        <nav class="tabs" role="tablist" aria-label="Level list">
+          <button type="button" role="tab" data-tab="classic" aria-controls="tab-classic" aria-selected="true">Classic</button>
+          <button type="button" role="tab" data-tab="platformer" aria-controls="tab-platformer" aria-selected="false">Platformer</button>
+        </nav>
+
+        <div id="tab-classic" role="tabpanel">
+          <section class="view">
+            <h2>Tags vs difficulty</h2>
+            <p class="hint">Share of levels in each position bucket that carry each tag. Rows are sorted by how high on the list the tag tends to appear. 
+                <br> <br>
+                If you change the levels per column to something other than 150 note that the last bucket will contain considerably fewer levels than the other buckets and thus 
+                the percentage will be higher even if the bucket contains the same amount of levels as another bucket. TLDR: I reccomend keeping it at 150 levels per column.
+                <br><em>(this might change in the future as more levels get added)</em>
             </p>
-            <div class="controls" id="enjoyment-controls"></div>
-            <div id="enjoyment-chart">Loading...</div>
-        </section>
-        <section class="view">
-            <h2>Level similarity</h2>
+            <div class="controls" id="heatmap-controls"></div>
+            <div id="heatmap-chart">Loading...</div>
+          </section>
+          <section class="view">
+              <h2>Tags vs enjoyment</h2>
+              <p class="hint">
+                  Average EDEL rating of the levels with each tag, shown as the difference from the average across all rated levels. Orange means a tag's levels are rated 
+                  more enjoyable than average, blue means less. The number in brackets is how many rated levels the tag has.
+              </p>
+              <div class="controls" id="enjoyment-controls"></div>
+              <div id="enjoyment-chart">Loading...</div>
+          </section>
+          <section class="view">
+              <h2>Level similarity</h2>
+              <p class="hint">
+                  Every dot is a level. Levels that share a lot of tags are pulled together, so clusters are groups of levels that play alike. Color shows difficulty: amber is near the top of the list, blue is near the bottom. Toggle tag groups to change what "similar" means, for example tick version and watch the clusters turn into noise.
+              </p>
+              <div class="controls" id="graph-controls"></div>
+              <div id="graph-chart"></div>
+          </section>
+          <section class="view">
+            <h2>Top creators by enjoyment</h2>
             <p class="hint">
-                Every dot is a level. Levels that share a lot of tags are pulled together, so clusters are groups of levels that play alike. Color shows difficulty: amber is near the top of the list, blue is near the bottom. Toggle tag groups to change what "similar" means, for example tick version and watch the clusters turn into noise.
+              Creators ranked by the average EDEL enjoyment of their levels on the list. The number in brackets is how many rated levels they have. "Creator" means whoever published the level in game, so a collab is credited to its host. The axis doesn't start at zero, so compare dots by position and not by distance from the left. A creator with 3 levels is a much shakier average than one with 10, so raise the minimum for more reliable results.
             </p>
-            <div class="controls" id="graph-controls"></div>
-            <div id="graph-chart"></div>
-        </section>
-        <section class="view">
-          <h2>Top creators by enjoyment</h2>
-          <p class="hint">
-            Creators ranked by the average EDEL enjoyment of their levels on the list. The number in brackets is how many rated levels they have. "Creator" means whoever published the level in game, so a collab is credited to its host. The axis doesn't start at zero, so compare dots by position and not by distance from the left. A creator with 3 levels is a much shakier average than one with 10, so raise the minimum for more reliable results.
-          </p>
-          <div class="controls" id="creators-controls"></div>
-          <div id="creators-chart">Loading...</div>
-        </section>
+            <div class="controls" id="creators-controls"></div>
+            <div id="creators-chart">Loading...</div>
+          </section>
+        </div>
+        <div id="tab-platformer" role="tabpanel" hidden>
+          <section class="view">
+            <h2>Tags vs difficulty</h2>
+            <p class="hint">Share of levels in each position bucket that carry each tag. Rows are sorted by how high on the list the tag tends to appear. 
+            </p>
+            <br>
+            <em>The buckets we're made with sizes that divide the current 213 levels nicely but if new levels get added note that the bottom bucket can become innacurate.</em>
+            <div class="controls" id="plat-heatmap-controls"></div>
+            <div id="plat-heatmap-chart">Loading...</div>
+          </section>
+          <section class="view">
+              <h2>Tags vs enjoyment</h2>
+              <p class="hint">
+                  Average EDEL rating of the levels with each tag, shown as the difference from the average across all rated levels. Orange means a tag's levels are rated 
+                  more enjoyable than average, blue means less. The number in brackets is how many rated levels the tag has.
+              </p>
+              <div class="controls" id="plat-enjoyment-controls"></div>
+              <div id="plat-enjoyment-chart">Loading...</div>
+          </section>
+          <section class="view">
+              <h2>Level similarity</h2>
+              <p class="hint">
+                  Every dot is a level. Levels that share a lot of tags are pulled together, so clusters are groups of levels that play alike. Color shows difficulty: amber is near the top of the list, blue is near the bottom. Toggle tag groups to change what "similar" means, for example tick version and watch the clusters turn into noise.
+              </p>
+              <div class="controls" id="plat-graph-controls"></div>
+              <div id="plat-graph-chart"></div>
+          </section>
+          <section class="view">
+            <h2>Top creators by enjoyment</h2>
+            <p class="hint">
+              Creators ranked by the average EDEL enjoyment of their levels on the list. The number in brackets is how many rated levels they have. "Creator" means whoever published the level in game, so a collab is credited to its host. The axis doesn't start at zero, so compare dots by position and not by distance from the left. A creator with 3 levels is a much shakier average than one with 10, so raise the minimum for more reliable results.
+            </p>
+            <div class="controls" id="plat-creators-controls"></div>
+            <div id="plat-creators-chart">Loading...</div>
+          </section>
+        </div>
     </main>
     <script type="module" src="site/main.js"></script>
   </body>

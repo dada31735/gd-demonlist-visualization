@@ -251,3 +251,35 @@ header p,
 .controls input[type='search'] {
   width: 14rem;
 }
+
+.tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.tabs button {
+  appearance: none;
+  font: inherit;
+  font-family: 'Lilita One', system-ui, sans-serif;
+  font-size: 1.2rem;
+  color: var(--tea-green);
+  background: var(--crimson-violet);
+  border: 3px solid var(--darker-crimson-violet);
+  border-radius: 0.6rem;
+  padding: 0.4rem 1.2rem;
+  box-shadow: 0.2rem 0.2rem 0 var(--darker-crimson-violet);
+  cursor: pointer;
+}
+
+.tabs button[aria-selected='true'] {
+  background: var(--amber-glow);
+  color: var(--darker-crimson-violet);
+  transform: translate(0.2rem, 0.2rem);
+  box-shadow: none;
+}
+
+.tabs button:focus-visible {
+  outline: 3px solid var(--amber-glow);
+  outline-offset: 2px;
+}

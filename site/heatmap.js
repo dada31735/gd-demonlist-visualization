@@ -2,15 +2,16 @@ import * as Plot from 'https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+e
 import { tagShareByBucket } from '../src/buckets.js';
 import { filterTags } from '../src/tags.js';
 import { addGroupToggles, checkedGroups } from './ui.js';
+import { CLASSIC } from '../src/datasets.js';
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 // tags sorted by mean position, so tags common near the top come first
-function tagOrder(levels, groups) {
+function tagOrder(levels, groups, tagGroups) {
   const sum = {};
   const n = {};
   for (const level of levels) {
-    for (const tag of new Set(filterTags(level.tags, groups))) {
+    for (const tag of new Set(filterTags(level.tags, groups, tagGroups))) {
       sum[tag] = (sum[tag] ?? 0) + level.position;
       n[tag] = (n[tag] ?? 0) + 1;
     }
@@ -22,13 +23,10 @@ function tagOrder(levels, groups) {
 export function renderHeatmap(levels, groups, options = {}) {
   const perTag = options.perTag ?? false;
   const bucketSize = options.bucketSize ?? 150;
+  const tagGroups = options.tagGroups;
+  const buckets = tagShareByBucket(levels, { groups, bucketSize, tagGroups });
+  const tags = tagOrder(levels, groups, tagGroups);
 
-  const buckets = tagShareByBucket(levels, {
-    groups,
-    bucketSize,
-  });
-
-  const tags = tagOrder(levels, groups);
   const label = (b) => `${b.start}-${b.end}`;
 
   const cells = buckets.flatMap((b) =>
@@ -87,11 +85,11 @@ export function renderHeatmap(levels, groups, options = {}) {
   });
 }
 
-export function mountHeatmap(levels) {
-  const controls = document.getElementById('heatmap-controls');
-  const chart = document.getElementById('heatmap-chart');
+export function mountHeatmap(levels, ds = CLASSIC) {
+  const controls = document.getElementById(`${ds.prefix}heatmap-controls`);
+  const chart = document.getElementById(`${ds.prefix}heatmap-chart`);
 
-  addGroupToggles(controls, new Set(['gamemode']));
+  addGroupToggles(controls, new Set(['gamemode']), ds.tagGroups);
 
   const perTagLabel = document.createElement('label');
   const perTagBox = document.createElement('input');
@@ -102,11 +100,11 @@ export function mountHeatmap(levels) {
 
   const sizeLabel = document.createElement('label');
   const sizeSelect = document.createElement('select');
-  for (const size of [100, 150, 300, 500]) {
+  for (const size of ds.bucketSizes) { 
     const option = document.createElement('option');
     option.value = size;
     option.textContent = `${size} levels per column`;
-    option.selected = size === 150;
+    option.selected = size === ds.bucketDefault;
     sizeSelect.append(option);
   }
   sizeLabel.append(sizeSelect);
@@ -122,6 +120,7 @@ export function mountHeatmap(levels) {
       renderHeatmap(levels, groups, {
         perTag: perTagBox.checked,
         bucketSize: Number(sizeSelect.value),
+        tagGroups: ds.tagGroups,
       }),
     );
   }

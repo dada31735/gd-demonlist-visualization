@@ -1,6 +1,7 @@
 import * as Plot from 'https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/+esm';
 import { enjoymentByTag } from '../src/enjoyment.js';
 import { addGroupToggles, checkedGroups } from './ui.js';
+import { CLASSIC } from '../src/datasets.js';
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const signed = (n) => `${n >= 0 ? '+' : ''}${n.toFixed(1)}`;
@@ -34,11 +35,11 @@ export function renderEnjoyment(levels, options) {
   });
 }
 
-export function mountEnjoyment(levels) {
-  const controls = document.getElementById('enjoyment-controls');
-  const chart = document.getElementById('enjoyment-chart');
+export function mountEnjoyment(levels, ds = CLASSIC) {
+  const controls = document.getElementById(`${ds.prefix}enjoyment-controls`);
+  const chart = document.getElementById(`${ds.prefix}enjoyment-chart`);
 
-  addGroupToggles(controls, new Set(['gamemode', 'style']));
+  addGroupToggles(controls, new Set(['gamemode', 'style']), ds.tagGroups);
 
   const pendingLabel = document.createElement('label');
   const pendingBox = document.createElement('input');
@@ -48,11 +49,11 @@ export function mountEnjoyment(levels) {
 
   const minLabel = document.createElement('label');
   const minSelect = document.createElement('select');
-  for (const n of [10, 20, 50]) {
+  for (const n of ds.minCounts) {
     const option = document.createElement('option');
     option.value = n;
     option.textContent = `at least ${n} levels per tag`;
-    option.selected = n === 20;
+    option.selected = n === ds.minCountDefault;
     minSelect.append(option);
   }
   minLabel.append(minSelect);
@@ -69,6 +70,7 @@ export function mountEnjoyment(levels) {
         groups,
         includePending: pendingBox.checked,
         minCount: Number(minSelect.value),
+        tagGroups: ds.tagGroups,
       }),
     );
   }

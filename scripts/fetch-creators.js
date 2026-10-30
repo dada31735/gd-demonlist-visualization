@@ -1,21 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-
-const base = process.argv[2];
-if (!base) {
-  console.error('Usage: node scripts/fetch-creators.js <base-url>');
-  process.exit(1);
-}
-
-const levels = JSON.parse(await readFile('data/levels.json', 'utf8'));
-
-let creators = {};
-try {
-  creators = JSON.parse(await readFile('data/creators.json', 'utf8'));
-} catch {}
-
-const todo = levels.filter((level) => !(level.name in creators));
-const total = todo.length;
-console.log(`${total} to fetch, ${levels.length - total} already cached`);
+import { BASE, LISTS } from './config.js';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -32,26 +16,40 @@ async function getJson(url) {
   throw new Error(`Rate limited: ${url}`);
 }
 
-let done = 0;
+async function fetchCreators(list, files) {
+  const levels = JSON.parse(await readFile(files.levels, 'utf8'));
 
-async function worker() {
-  while (todo.length) {
-    const level = todo.pop();
-    const detail = await getJson(`${base}/aredl/levels/${level.id}`);
-    const publisher = detail.publisher;
-    creators[level.name] = publisher?.global_name ?? publisher?.username ?? null;
-    done++;
-    if (done % 100 === 0) console.log(`${done} / ${total}`);
-    await sleep(100);
+  let creators = {};
+  try {
+    creators = JSON.parse(await readFile(files.creators, 'utf8'));
+  } catch {}
+
+  const todo = levels.filter((level) => !(level.name in creators));
+  const total = todo.length;
+  console.log(`${list}: ${total} to fetch, ${levels.length - total} already cached`);
+
+  let done = 0;
+
+  async function worker() {
+    while (todo.length) {
+      const level = todo.pop();
+      const detail = await getJson(`${BASE}/${list}/levels/${level.id}`);
+      const publisher = detail.publisher;
+      creators[level.name] = publisher?.global_name ?? publisher?.username ?? null;
+      done++;
+      if (done % 100 === 0) console.log(`${done} / ${total}`);
+      await sleep(100);
+    }
+  }
+
+  try {
+    await Promise.all(Array.from({ length: 4 }, worker));
+  } finally {
+    const sorted = Object.fromEntries(Object.entries(creators).sort(([a], [b]) => a.localeCompare(b)),);
+    await mkdir('data', { recursive: true });
+    await writeFile(files.creators, JSON.stringify(sorted));
+    console.log(list, 'saved', Object.keys(sorted).length, 'levels');
   }
 }
 
-try {
-  await Promise.all(Array.from({ length: 4 }, worker));
-} finally {
-  const sorted = Object.fromEntries(Object.entries(creators).sort(([a], [b]) => a.localeCompare(b)),);
-  await mkdir('data', { recursive: true });
-  await writeFile('data/creators.json', JSON.stringify(sorted));
-  console.log('saved', Object.keys(sorted).length, 'levels');
-  console.log('sample:', Object.entries(sorted).slice(0, 3));
-}
+for (const [list, files] of Object.entries(LISTS)) await fetchCreators(list, files);
